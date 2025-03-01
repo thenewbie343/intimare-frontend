@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intimare AI - Your Gen Z Chat Buddy</title>
+    <!-- Tailwind CSS for Gen Z aesthetics -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes gradientWave {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientWave 15s ease infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-['Outfit']">
+    <!-- Main Container -->
+    <div class="container mx-auto max-w-4xl min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="gradient-bg p-6 text-center">
+            <h1 class="text-4xl font-bold mb-2">🤖 Intimare AI</h1>
+            <p class="text-lg opacity-90">Your sassy, Gen Z AI companion - no cap! 😜</p>
+        </header>
+
+        <!-- Chat Container -->
+        <div class="flex-1 p-4 overflow-y-auto space-y-4" id="chatContainer">
+            <!-- AI Welcome Message -->
+            <div class="flex items-start space-x-2">
+                <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">✨</div>
+                <div class="max-w-[70%] bg-gray-800 p-4 rounded-2xl">
+                    <p>Hey bestie! 👋 Ready to spill the tea? I'm here to chat, roast (gently 😉), 
+                    and help with your drama-free zone! What's good?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-4 border-t border-gray-700">
+            <div class="flex gap-2">
+                <input 
+                    type="text" 
+                    id="messageInput"
+                    class="flex-1 bg-gray-800 rounded-2xl p-4 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="Type your message... no pressure, we chill 😎"
+                >
+                <button 
+                    id="sendButton"
+                    class="bg-purple-600 hover:bg-purple-700 px-6 py-4 rounded-2xl font-semibold transition-colors"
+                >
+                    Send 🚀
+                </button>
+            </div>
+            <p class="text-sm text-gray-400 mt-2">Pro tip: Add emojis for extra vibes! 🔥</p>
+        </div>
+    </div>
+
+    <!-- Typing Indicator (Hidden by default) -->
+    <div id="typingIndicator" class="hidden fixed bottom-24 left-4 bg-gray-800 p-3 rounded-xl">
+        <div class="flex items-center space-x-2 text-purple-400">
+            <div class="dot-flashing"></div>
+            <span>Intimare is typing...</span>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const chatContainer = document.getElementById('chatContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // Gen Z Response Generator (Replace with actual API call)
+        async function getAIResponse(userMessage) {
+            // Show typing indicator
+            typingIndicator.classList.remove('hidden');
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            // Sample responses (Replace with real AI integration)
+            const responses = [
+                "Slay! That's fire 🔥 Tell me more!",
+                "No cap? Fr fr? 😮",
+                "Deadass? Let's unpack that...",
+                "You ate with that question! 🍽️",
+                "Vibes detected! 🌈",
+                "Spill the tea sis! ☕",
+                "That's giving main character energy! 💅"
+            ];
+
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // Add message to chat
+        function addMessage(message, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex items-start space-x-2 ${isUser ? 'justify-end' : ''}`;
+            
+            messageDiv.innerHTML = `
+                ${!isUser ? '<div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">✨</div>' : ''}
+                <div class="max-w-[70%] ${isUser ? 'bg-purple-600' : 'bg-gray-800'} p-4 rounded-2xl">
+                    <p>${message}</p>
+                </div>
+                ${isUser ? '<div class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">👤</div>' : ''}
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Event Listeners
+        sendButton.addEventListener('click', async () => {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, true);
+            messageInput.value = '';
+
+            // Get AI response
+            const response = await getAIResponse(message);
+            typingIndicator.classList.add('hidden');
+            addMessage(response);
+        });
+
+        // Enter key support
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendButton.click();
+        });
+    </script>
+</body>
+</html>
